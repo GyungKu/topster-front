@@ -2,7 +2,7 @@
   <div>
     <h1>내 정보 페이지</h1>
     <button onclick="location.href='#'">내 프로필</button>
-    <button onclick="location.href='#'">내 탑스터</button>
+    <router-link :to="{name: 'myTopster'}">내 탑스터</router-link>
     <button onclick="location.href='#'">정보 수정</button>
     <button onclick="location.href='#'">내 게시글</button>
   </div>
@@ -31,6 +31,16 @@ body {
 }
 
 button {
+  background-color: #555; /* 회색으로 변경 */
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+router-link {
   background-color: #555; /* 회색으로 변경 */
   color: white;
   padding: 10px 15px;

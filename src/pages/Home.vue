@@ -5,7 +5,7 @@
       <div class="container">
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-          <TopsterCard v-for="(topster, idx) in state.topsters" :key="idx" :topster="topster" />
+          <TopsterCard v-for="(topster, idx) in state.topsters" :key="idx" :topster="topster" no-post="no" />
         </div>
       </div>
 

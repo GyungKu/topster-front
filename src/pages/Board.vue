@@ -37,7 +37,7 @@
             <th>
               <router-link :to="{name: 'postDetail', params: {postId: post.id}}">{{ post.title }}</router-link>
             </th>
-            <td>작성자</td>
+            <td>{{ post.author }}</td>
             <td>{{ formatDate(post.createdAt) }}</td>
           </tr>
           </tbody>

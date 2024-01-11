@@ -10,10 +10,10 @@
     <div class="card-body">
       <p class="card-text">제목 : {{ topster.title }}</p>
       <div class="d-flex justify-content-between align-items-center">
-<!--        <div v-if="noPost == null">-->
-<!--          <router-link :to="{name: 'postRegister', params: {topsterId: topster.id}}"-->
-<!--                       class="btn btn-primary">바로가기</router-link>-->
-<!--        </div>-->
+        <div v-if="noPost != 'no'">
+          <router-link :to="{name: 'postRegister', params: {topsterId: topster.id}}"
+                       class="btn btn-primary">게시글 작성하기</router-link>
+        </div>
       </div>
       <div>작성자 : {{ topster.author }}</div>
       <div>작성일 : {{ formatDate(topster.createdAt) }}</div>
