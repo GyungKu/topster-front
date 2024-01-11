@@ -2,16 +2,14 @@
   <div id="board-search">
     <div class="container">
       <div class="search-window">
-        <form action="">
           <div class="search-wrap">
             <select v-model="searchCond.searchKey">
               <option v-for="(item, idx) in selectList" :key="idx" :value="item.value">
                 {{ item.name }}</option>
             </select>
             <input id="search" type="search" name="" placeholder="검색어를 입력해주세요." value="" v-model="searchCond.query">
-            <button type="submit" class="btn btn-dark" @click="searchPost(searchCond)">검색</button>
+            <button type="submit" class="btn btn-dark" @click="searchPost(searchCond)" @keydown-enter="searchPost(searchCond)">검색</button>
           </div>
-        </form>
       </div>
     </div>
   </div>

@@ -12,6 +12,16 @@
     <!-- board list area -->
     <div id="board-list">
       <div class="container">
+        <!-- 추가: 최대 항목 수(max) 설정 -->
+        <div class="max-per-page">
+          <label for="maxPerPage">최대 항목 수:</label>
+          <select v-model="max" @change="search">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <!-- 필요에 따라 다양한 옵션 추가 가능 -->
+          </select>
+        </div>
         <table class="board-table">
           <thead>
           <tr>
@@ -35,15 +45,20 @@
       </div>
     </div>
 
+    <!-- 페이지네이션 컨트롤 -->
+    <Pagination :page="page" :totalPages="totalPages" @pageChange="handlePageChange" />
+
   </section>
 </template>
 
 <script>
 import axios from "axios";
 import SearchBar from "@/components/SearchBar.vue";
+import Pagination from "@/components/Pagination.vue";
 
 export default {
   components: {
+    Pagination,
     SearchBar,
   },
 
@@ -58,34 +73,35 @@ export default {
       page: 1,
       max: 10,
       posts: [],
+      totalPages: 1, // totalPages를 추가합니다.
+      totalPageArray: [],
     };
   },
 
-  // mounted() {
-  //   axios.get("/posts").then((res) => {
-  //     this.posts = res.data.content;
-  //   })
-  // },
+  mounted() {
+    axios.get("/posts").then((res) => {
+      this.posts = res.data.content;
+    })
+  },
   methods: {
     search() {
-      const key = this.searchCond.searchKey;
-      const query = this.searchCond.query;
+      const queryString = `?key=${this.searchCond.searchKey}&query=${this.searchCond.query}&page=${this.page}&max=${this.max}`;
 
-      // Axios를 사용하여 서버에서 게시글 목록을 가져옴
-      axios.get(`/posts?${key}=${query}`)
+      axios.get(`/posts${queryString}`)
       .then(response => {
         this.posts = response.data.content;
+        this.totalPages = response.data.totalPages;
+        this.totalPageArray = this.generatePageArray;
       })
       .catch(error => {
-        console.error('Error fetching posts:', error);
+        console.error('게시물을 불러오는 중 에러 발생:', error);
       });
     },
 
     searchCondSet(searchCond) {
       this.searchCond = searchCond;
-      console.log(searchCond.key);
-      console.log(searchCond.query);
-      this.search();
+      this.page = 1; // 검색 시 페이지를 1로 초기화
+      this.search(); // 검색 시에도 게시물을 다시 가져오도록 수정
     },
 
     formatDate(createdAt) {
@@ -94,7 +110,46 @@ export default {
       return formattedDate;
     },
 
+    prevPage() {
+      if (this.page > 1) {
+        this.page--;
+        this.search();
+      }
+    },
+
+    nextPage() {
+      if (this.page < this.totalPages) {
+        this.page++;
+        this.search();
+      }
+    },
+
+    gotoPage(pageNumber) {
+      this.page = pageNumber;
+      this.search();
+    },
+
+    handlePageChange(newPage) {
+      this.page = newPage;
+      this.search(); // 페이지 변경 시에도 게시물을 다시 가져오도록 수정
+    },
+
   },
+
+  computed: {
+    // 계산된 속성을 통해 페이지 숫자 배열 생성
+    generatePageArray() {
+      return Array.from({ length: this.totalPages }, (_, index) => index + 1);
+    },
+  },
+
+  watch: {
+    // 페이지가 바뀔 때마다 totalPageArray 업데이트
+    page() {
+      this.totalPageArray = this.generatePageArray;
+    },
+  },
+
 };
 
 function padZero(value) {
@@ -279,5 +334,37 @@ section.notice {
   margin: -1px;
   width: 1px;
   height: 1px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  background-color: #2c3e50; /* 어두운 색으로 변경 */
+  color: #fff;
+  border: 1px solid #2c3e50; /* 어두운 색으로 변경 */
+  padding: 8px 12px;
+  margin: 0 4px;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #1d2731; /* 어두운 색으로 변경 */
+  border-color: #1d2731; /* 어두운 색으로 변경 */
+}
+
+.pagination button:disabled {
+  background-color: #4a627a; /* 어두운 색으로 변경 */
+  color: #7f8c8d;
+  cursor: not-allowed;
+}
+
+.pagination button.active {
+  background-color: #34495e; /* 어두운 색으로 변경 */
+  border-color: #34495e; /* 어두운 색으로 변경 */
 }
 </style>
