@@ -7,8 +7,8 @@
               <option v-for="(item, idx) in selectList" :key="idx" :value="item.value">
                 {{ item.name }}</option>
             </select>
-            <input id="search" type="search" name="" placeholder="검색어를 입력해주세요." value="" v-model="searchCond.query">
-            <button type="submit" class="btn btn-dark" @click="searchPost(searchCond)" @keydown-enter="searchPost(searchCond)">검색</button>
+            <input id="search" type="search" name="" placeholder="검색어를 입력해주세요." value="" v-model="searchCond.query" @keydown.enter="searchPost(searchCond)">
+            <button type="submit" class="btn btn-dark" @click="searchPost(searchCond)">검색</button>
           </div>
       </div>
     </div>
