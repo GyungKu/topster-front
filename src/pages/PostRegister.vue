@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopsterCard :topster="state.topster" :noPost="''" v-if="state.topster != null" />
+    <TopsterCard :topster="state.topster" :no-btn="'no'" v-if="state.topster != null" />
     <form @submit.prevent="submitPost">
       <label for="title">제목:</label>
       <input type="text" v-model="title" id="title" required>

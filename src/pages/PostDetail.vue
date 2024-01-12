@@ -1,6 +1,6 @@
 <template>
   <div>
-<!--    <TopsterCard :topster="topster" v-if="topster != null"/>-->
+    <TopsterCard :topster="topster" v-if="topster != null" :no-post="'no'" :centerAlign="true"/>
 
     <PostContent :post="post" />
 
@@ -16,9 +16,11 @@ import axios from 'axios';
 import CommentList from "@/components/CommentList.vue";
 import CommentForm from "@/components/CommentForm.vue";
 import router from "@/scripts/router";
+import TopsterCard from "@/components/TopsterCard.vue";
 
 export default {
   components: {
+    TopsterCard,
     CommentList,
     PostContent,
     CommentForm
@@ -64,7 +66,7 @@ export default {
       })
       .then((res) => {
         if (res.data.code == '1009') {
-          global.alert('로그인을 먼저 하십시오');
+          alert('로그인을 먼저 하십시오');
           router.push('/login');
         }
         // 댓글 목록 다시 불러오기

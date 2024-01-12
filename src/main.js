@@ -8,13 +8,17 @@ const app = createApp(App);
 
 axios.defaults.baseURL = 'http://localhost:8080/api/v1';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
-const accessToken = localStorage.getItem("accessToken");
+
+
 // 로그인이 필요한 페이지
 const needLogin = ['mypage', 'topsterRegister', 'postRegister'];
 
-router.beforeEach((to) => {
+const accessToken = localStorage.getItem("accessToken");
+
+router.beforeEach((to, from) => {
   if (needLogin.includes(to.name) && accessToken == null) {
-    return {name:'login'}
+    alert('로그인이 필요합니다');
+    return {name:'login', from}
   }
 })
 

@@ -30,7 +30,7 @@ body {
   background-color: #f4f4f4;
 }
 
-.mypage-button {
+.mypage-button, router-link {
   background-color: #555; /* 회색으로 변경 */
   color: white;
   padding: 10px 15px;
@@ -38,19 +38,10 @@ body {
   border-radius: 5px;
   margin: 10px;
   cursor: pointer;
+  text-decoration: none; /* 밑줄 제거 */
 }
 
-router-link {
-  background-color: #555; /* 회색으로 변경 */
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  margin: 10px;
-  cursor: pointer;
-}
-
-button:hover {
+button:hover, router-link:hover {
   background-color: #333; /* 호버 시 어두운 회색으로 변경 */
 }
 </style>

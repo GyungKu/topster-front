@@ -12,7 +12,7 @@ const store = createStore({
       }
     }
     return {
-      token: '',
+      token: null,
     }
   },
   mutations: {
@@ -34,8 +34,10 @@ const store = createStore({
         commit('setToken', token);
         localStorage.setItem("accessToken", JSON.stringify(accessToken));
         if (from != null) {
-          router.push(from);
+          location.reload();
+          router.push({path: '/'});
         } else {
+          location.reload();
           router.push({path: '/'});
         }
       })

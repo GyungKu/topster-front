@@ -1,5 +1,4 @@
 <template>
-  <section class="notice">
     <div class="page-title">
       <div class="container">
         <h3>자유 게시판</h3>
@@ -48,7 +47,6 @@
     <!-- 페이지네이션 컨트롤 -->
     <Pagination :page="page" :totalPages="totalPages" @pageChange="handlePageChange" />
 
-  </section>
 </template>
 
 <script>

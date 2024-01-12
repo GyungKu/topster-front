@@ -8,6 +8,7 @@ import PostDetail from "@/pages/PostDetail.vue";
 import TopsterRegister from "@/pages/TopsterRegister.vue";
 import Board from "@/pages/Board.vue";
 import MyTopster from "@/pages/MyTopster.vue";
+import PostEdit from "@/pages/PostEdit.vue";
 
 const routes = [
   {name: 'home', path: '/', component: Home},
@@ -19,6 +20,7 @@ const routes = [
   {name: 'postDetail', path: '/posts/:postId', component: PostDetail},
   {name: 'board', path: '/posts', component: Board},
   {name: 'myTopster', path: '/myTopster', component: MyTopster},
+  {name: 'postEdit', path: '/posts/:postId/edit', component: PostEdit},
 ]
 
 const router = createRouter({
