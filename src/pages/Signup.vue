@@ -3,33 +3,33 @@
       <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
       <div class="form-floating">
-        <input type="username" class="form-control" id="floatingInput" placeholder="name@example.com" v-model="state.form.username">
+        <input type="username" class="form-control" id="floatingInput" placeholder="name@example.com" v-model="username">
         <label for="floatingInput">아이디를 입력해 주세요</label>
       </div>
       <div class="form-floating">
-        <input type="nickname" class="form-control" id="floatingInput" placeholder="nickname" v-model="state.form.nickname">
+        <input type="nickname" class="form-control" id="floatingInput" placeholder="nickname" v-model="nickname">
         <label for="floatingInput">닉네임을 입력해 주세요</label>
       </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" v-model="state.form.password">
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" v-model="password">
       <label for="floatingPassword">비밀번호를 입력해 주세요</label>
     </div>
     <div class="d-flex align-items-center">
       <div class="form-floating flex-grow-1">
-        <input type="email" class="form-control" id="floatingInput" placeholder="email" v-model="state.form.email">
+        <input type="email" class="form-control" id="floatingInput" placeholder="email" v-model="email">
         <label for="floatingInput">이메일을 입력해 주세요</label>
       </div>
       <button class="btn btn-outline-secondary ms-2" @click="checkEmail">이메일 인증</button>
     </div>
     <div class="d-flex align-items-center mt-2">
       <div class="form-floating flex-grow-1">
-        <input type="text" class="form-control" id="floatingVerificationCode" placeholder="Verification Code" v-model="state.form.certification">
+        <input type="text" class="form-control" id="floatingVerificationCode" placeholder="Verification Code" v-model="certification">
         <label for="floatingVerificationCode">인증번호를 입력해 주세요</label>
       </div>
       <button class="btn btn-outline-secondary ms-2" @click="verifyCode">인증번호 확인</button>
     </div>
     <div class="form-floating">
-      <input type="intro" class="form-control" id="floatingInput" placeholder="intro" v-model="state.form.intro">
+      <input type="intro" class="form-control" id="floatingInput" placeholder="intro" v-model="intro">
       <label for="floatingInput">자기소개를 입력해 주세요</label>
     </div>
 
@@ -39,24 +39,22 @@
 </template>
 
 <script>
-import {reactive} from "vue";
 import axios from "axios";
 
 export default {
-  setup() {
-    const state = reactive({
-      form :{
-        username:"",
-        nickname:"",
-        password:"",
-        email:"",
-        certification:"",
-        intro:""
-      }
-    })
-
-    const checkEmail = () => {
-      axios.post("/users/mail?email=" + encodeURIComponent(state.form.email))
+  data()  {
+    return{
+      username:"",
+          nickname:"",
+          password:"",
+          email:"",
+          certification:"",
+          intro:""
+    }
+  },
+  methods: {
+    checkEmail() {
+      axios.post("/users/mail?email=" + encodeURIComponent(this.email))
       .then(() => {
         window.alert("인증번호가 발송되었습니다.");
       })
@@ -64,18 +62,26 @@ export default {
         console.error(err);
         window.alert("인증번호 발송에 실패했습니다.")
       });
-    };
+    },
 
-    const submit = () => {
-      console.log(state.form.email);
-      console.log(state.form.certification);
-      axios.post("/users/signup", state.form)
+    submit() {
+      const form = {
+        username:this.username,
+        nickname:this.nickname,
+        password:this.password,
+        email:this.email,
+        certification:this.certification,
+        intro:this.intro,
+      }
+      console.log(this.email);
+      console.log(this.certification);
+      axios.post("/users/signup", form)
       .then((res) => {
 
-        if (res.data.certification) {
-          window.alert("인증번호가 확인되었습니다.");
+        if (res.data) {
+          window.alert("회원가입이 완료되었습니다.");
         } else {
-          window.alert("인증번호가 올바르지 않습니다.");
+          window.alert("회원가입이 실패하였습니다.");
         }
       })
       .catch((err) => {
@@ -85,9 +91,27 @@ export default {
             : "인증번호 검증 과정에서 문제가 발생했습니다.";
         window.alert(message);
       });
-    };
+    },
 
-    return{state, checkEmail, submit}
+    verifyCode() {
+      const form = {
+        email:this.email,
+        certification:this.certification,
+      }
+      console.log(this.email);
+      console.log(this.certification);
+      axios.post("/users/mail/certification", form)
+      .then(() => {
+        alert("인증번호가 확인되었습니다.")
+      })
+      .catch((err) => {
+        // 서버가 오류 응답을 보냈을 때의 상태 코드와 오류 메시지를 확인합니다.
+        const message = (err.response && err.response.data && err.response.data.message)
+            ? err.response.data.message
+            : "인증번호 검증 과정에서 문제가 발생했습니다.";
+        window.alert(message);
+      });
+    },
   }
 }
 
