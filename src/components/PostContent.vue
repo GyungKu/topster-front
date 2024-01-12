@@ -6,7 +6,7 @@
       <p>작성자: {{ post.author }}</p>
       <p>작성일: {{ formatDate(post.createdAt) }}</p>
     </div>
-    <div class="buttons">
+    <div class="buttons" v-if="store.state.token !== null">
       <!-- 수정 버튼 -->
       <button @click="editPost" class="edit-button">수정</button>
       <!-- 삭제 버튼 -->
@@ -18,8 +18,14 @@
 <script>
 import axios from "axios";
 import router from "@/scripts/router";
+import store from "@/scripts/store";
 
 export default {
+  computed: {
+    store() {
+      return store
+    }
+  },
   props: {
     post: Object,
   },

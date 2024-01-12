@@ -13,6 +13,7 @@ import PostEdit from "@/pages/PostEdit.vue";
 const routes = [
   {name: 'home', path: '/', component: Home},
   {name: 'login', path: '/login', component: Login},
+  {name: 'signup', path: '/signup', component: Signup},
   {name: 'mypage', path: '/mypage', component: Mypage},
   {name: 'topsterRegister', path: '/topster', component: TopsterRegister},
   {name: 'signup', path: '/signup', component: Signup},

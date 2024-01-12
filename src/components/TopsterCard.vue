@@ -17,7 +17,7 @@
           <div>작성일 : {{ formatDate(topster.createdAt) }}</div>
           <div>좋아요 : 10</div>
         </div>
-        <div v-if="!noBtn" class="d-flex justify-content-between align-items-center">
+        <div v-if="!noBtn && store.state.token !== null" class="d-flex justify-content-between align-items-center">
           <div>
             <router-link v-if="!noPost" :to="{name: 'postRegister', params: {topsterId: topster.id}}" class="btn btn-primary">게시글 작성하기</router-link>
             <button v-if="!noPost" @click="deleteTopster" class="btn btn-danger">삭제</button>
@@ -108,7 +108,13 @@ export default {
     },
 
     likeTopster() {
-      alert('좋아요!');
+      axios.post(`topsters/${this.topster.id}/like`)
+      .then(() => {
+        alert('좋아요!');
+      })
+      .catch(() => {
+        alert('좋아요 실패!');
+      })
     },
 
   },

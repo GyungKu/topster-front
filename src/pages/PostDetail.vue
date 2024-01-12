@@ -4,7 +4,7 @@
 
     <PostContent :post="post" />
 
-    <CommentList :comments="comments" />
+    <CommentList :comments="comments" @delete-comment="deleteComment" @edit-comment="editComment" />
 
     <CommentForm @submit-comment="submitComment" />
   </div>
@@ -76,6 +76,7 @@ export default {
         console.error('댓글 작성 중 오류 발생:', error);
       });
     },
+
     loadComments() {
       // 댓글 목록을 다시 불러오는 API 호출
       const postId = this.$route.params.postId;
@@ -87,6 +88,32 @@ export default {
         console.error('댓글 목록을 불러오는 중 오류 발생:', error);
       });
     },
+
+    editComment(comment) {
+      const dataForm = {
+        content: comment.content,
+      };
+      axios.patch(`/comments/${comment.id}`, dataForm)
+      .then(() => {
+        alert('수정 성공');
+        this.loadComments();
+      })
+      .catch(() => {
+        alert('무언가 오류가 발생');
+      })
+    },
+
+    deleteComment(commentId) {
+      axios.delete(`/comments/${commentId}`)
+      .then(() => {
+        alert('삭제 완료');
+        this.loadComments();
+      })
+      .catch(() => {
+        alert('본인의 댓글이 아닙니다.');
+      })
+    }
+
   },
 };
 </script>

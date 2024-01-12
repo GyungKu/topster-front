@@ -4,15 +4,15 @@
 
     <div class="form-floating">
       <input type="username" class="form-control" id="floatingInput" v-model="username">
-      <label for="floatingInput">아이디</label>
+      <label for="floatingInput" @keydown.enter="submit">아이디</label>
     </div>
     <div class="form-floating">
       <input type="password" class="form-control" id="floatingPassword"
-             v-model="password">
+             v-model="password" @keydown.enter="submit">
       <label for="floatingPassword">비밀번호</label>
     </div>
 
-    <button class="btn btn-primary w-100 py-2" @click="submit()">로그인</button>
+    <button class="btn btn-primary w-100 py-2" @click="submit">로그인</button>
     <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2023</p>
   </div>
 </template>
