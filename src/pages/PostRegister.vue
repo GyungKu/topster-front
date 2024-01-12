@@ -39,7 +39,7 @@ export default {
       })
       .catch(err => {
         const errInfo = err.response;
-        global.alert(errInfo.data);
+        alert(errInfo.data);
         router.push("/");
       });
     });
@@ -65,11 +65,11 @@ export default {
 
       axios.post(`/topster/${topsterId}/posts`, formData)
       .then(() => {
-        global.alert("등록 완료!");
+        alert("등록 완료!");
         router.push('/');
       })
       .catch((err) => {
-        global.alert(err.response.data.message);
+        alert(err.response.data.message);
         router.push('/');
       })
     }

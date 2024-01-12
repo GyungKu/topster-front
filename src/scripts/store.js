@@ -22,10 +22,10 @@ const store = createStore({
     },
   },
   actions: {
-    login({ commit }, userData) {
+    login({ commit, from }, userData) {
       axios.post("/users/login", userData, {withCredentials: true})
       .then((res) => {
-        global.alert("로그인 성공");
+        alert("로그인 성공");
         const token = res.headers['authorization'];
         const accessToken = {
           token: token,
@@ -33,15 +33,19 @@ const store = createStore({
         }
         commit('setToken', token);
         localStorage.setItem("accessToken", JSON.stringify(accessToken));
-        router.push({path: '/'})
+        if (from != null) {
+          router.push(from);
+        } else {
+          router.push({path: '/'});
+        }
       })
       .catch(() => {
-        global.alert("로그인 실패")
+        alert("로그인 실패")
       })
     },
 
     logout({ commit }) {
-      global.alert('로그아웃 성공');
+      alert('로그아웃 성공');
       localStorage.removeItem("accessToken");
       commit("setToken", '');
       router.push({path: '/'});

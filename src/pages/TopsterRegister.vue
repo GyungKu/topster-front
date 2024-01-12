@@ -78,7 +78,7 @@ export default {
       .then(response => {
 
         if (response.data.code == '1009') {
-          global.alert('로그인이 필요한 기능입니다.');
+          alert('로그인이 필요한 기능입니다.');
           router.push('/login');
         }
 
