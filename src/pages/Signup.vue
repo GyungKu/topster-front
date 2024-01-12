@@ -14,9 +14,19 @@
       <input type="password" class="form-control" id="floatingPassword" placeholder="Password" v-model="state.form.password">
       <label for="floatingPassword">비밀번호를 입력해 주세요</label>
     </div>
-    <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" placeholder="email" v-model="state.form.email">
-      <label for="floatingInput">이메일을 입력해 주세요</label>
+    <div class="d-flex align-items-center">
+      <div class="form-floating flex-grow-1">
+        <input type="email" class="form-control" id="floatingInput" placeholder="email" v-model="state.form.email">
+        <label for="floatingInput">이메일을 입력해 주세요</label>
+      </div>
+      <button class="btn btn-outline-secondary ms-2" @click="checkEmail">이메일 인증</button>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+      <div class="form-floating flex-grow-1">
+        <input type="text" class="form-control" id="floatingVerificationCode" placeholder="Verification Code" v-model="state.form.certification">
+        <label for="floatingVerificationCode">인증번호를 입력해 주세요</label>
+      </div>
+      <button class="btn btn-outline-secondary ms-2" @click="verifyCode">인증번호 확인</button>
     </div>
     <div class="form-floating">
       <input type="intro" class="form-control" id="floatingInput" placeholder="intro" v-model="state.form.intro">
@@ -31,7 +41,6 @@
 <script>
 import {reactive} from "vue";
 import axios from "axios";
-import store from "@/scripts/store";
 
 export default {
   setup() {
@@ -41,25 +50,48 @@ export default {
         nickname:"",
         password:"",
         email:"",
+        certification:"",
         intro:""
       }
     })
 
-    const submit = () => {
-      axios.post("/users/signup", state.form)
-      .then((res) => {
-        store.commit("setUser", res.data)
-        window.alert("로그인 성공");
+    const checkEmail = () => {
+      axios.post("/users/mail?email=" + encodeURIComponent(state.form.email))
+      .then(() => {
+        window.alert("인증번호가 발송되었습니다.");
       })
       .catch((err) => {
-        console.log(err);
-        window.alert("로그인 실패")
-      })
-    }
+        console.error(err);
+        window.alert("인증번호 발송에 실패했습니다.")
+      });
+    };
 
-    return{state, submit}
+    const submit = () => {
+      console.log(state.form.email);
+      console.log(state.form.certification);
+      axios.post("/users/signup", state.form)
+      .then((res) => {
+
+        if (res.data.certification) {
+          window.alert("인증번호가 확인되었습니다.");
+        } else {
+          window.alert("인증번호가 올바르지 않습니다.");
+        }
+      })
+      .catch((err) => {
+        // 서버가 오류 응답을 보냈을 때의 상태 코드와 오류 메시지를 확인합니다.
+        const message = (err.response && err.response.data && err.response.data.message)
+            ? err.response.data.message
+            : "인증번호 검증 과정에서 문제가 발생했습니다.";
+        window.alert(message);
+      });
+    };
+
+    return{state, checkEmail, submit}
   }
 }
+
+
 </script>
 
 <style scoped>
@@ -76,5 +108,24 @@ export default {
   margin-bottom: 10px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
+}
+
+.form-control {
+  padding-right: 100px;
+}
+.form-floating {
+  position: relative;
+}
+
+.form-floating .form-control {
+  padding-right: 100px; /* 버튼이 있을 자리를 비워두기 위해 오른쪽 패딩을 추가합니다. */
+}
+
+.form-floating .btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%; /* 버튼의 높이를 input 필드와 동일하게 맞춥니다. */
+  z-index: 10; /* 필요하다면 z-index를 조절하여 버튼이 다른 요소 위에 오도록 합니다. */
 }
 </style>
