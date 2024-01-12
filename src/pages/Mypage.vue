@@ -1,10 +1,10 @@
 <template>
   <div>
     <h1>내 정보 페이지</h1>
-    <button onclick="location.href='#'">내 프로필</button>
-    <router-link :to="{name: 'myTopster'}">내 탑스터</router-link>
-    <button onclick="location.href='#'">정보 수정</button>
-    <button onclick="location.href='#'">내 게시글</button>
+    <button onclick="location.href='#'" class="mypage-button">내 프로필</button>
+    <router-link :to="{name: 'myTopster'}" class="mypage-button">내 탑스터</router-link>
+    <button onclick="location.href='#'" class="mypage-button">정보 수정</button>
+    <button onclick="location.href='#'" class="mypage-button">내 게시글</button>
   </div>
 </template>
 
@@ -30,7 +30,7 @@ body {
   background-color: #f4f4f4;
 }
 
-button {
+.mypage-button {
   background-color: #555; /* 회색으로 변경 */
   color: white;
   padding: 10px 15px;
