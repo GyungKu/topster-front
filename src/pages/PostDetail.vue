@@ -45,8 +45,9 @@ export default {
         this.topster = res.data;
       })
     })
-    .catch(error => {
-      console.error('게시글 정보를 불러오는 중 오류 발생:', error);
+    .catch(() => {
+      router.push('/posts');
+      alert('존재하지 않는 게시글입니다.');
     });
 
     axios.get(`/posts/${postId}/comments`)
@@ -58,7 +59,7 @@ export default {
     });
   },
   methods: {
-    submitComment(newComment) {
+    submitComment(newComment,) {
       // 댓글 작성 API 호출
       const postId = this.$route.params.postId;
       axios.post(`/posts/${postId}/comments`, {
@@ -67,7 +68,8 @@ export default {
       .then((res) => {
         if (res.data.code == '1009') {
           alert('로그인을 먼저 하십시오');
-          router.push('/login');
+          const redirect = this.$route.path;
+          router.push({name: 'login', query: {redirect: redirect}});
         }
         // 댓글 목록 다시 불러오기
         this.loadComments();

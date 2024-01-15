@@ -19,7 +19,12 @@
 
 <script>
 
+
+
+import router from "@/scripts/router";
+
 export default {
+
   data() {
     return {
       username: "",
@@ -34,7 +39,10 @@ export default {
         password: this.password
       };
 
-      this.$store.dispatch('login', userData);
+      this.$store.dispatch('login', userData).then(() => {
+        const redirect = this.$route.query.redirect || '/';
+        router.replace(redirect);
+      })
     }
   },
 }

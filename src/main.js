@@ -15,19 +15,23 @@ const needLogin = ['mypage', 'topsterRegister', 'postRegister'];
 
 const accessToken = localStorage.getItem("accessToken");
 
-router.beforeEach((to, from) => {
-  if (needLogin.includes(to.name) && accessToken == null) {
+router.beforeEach((to, from, next) => {
+  if (needLogin.includes(to.name) && !store.state.token) {
     alert('로그인이 필요합니다');
-    return {name:'login', from}
+    next({
+      name:'login',
+      query: {redirect:to.fullPath},
+    });
   }
+  next();
 })
 
-if (accessToken !== null) { // accessToken 이 존재한다면
-  const token = JSON.parse(accessToken);
-  if (Date.now() >= token.expire) { // 만료기간이 지났다면 localStorage에서 제거
+if (store.state.token) { // accessToken이 존재하면
+  if (Date.now() >= accessToken.expire) { // 만료기간이 지났다면 localStorage에서 제거
     localStorage.removeItem("accessToken");
-  } else { // 안 지났다면 store에 넣기
-    axios.defaults.headers.common['Authorization'] = token.token;
+    store.dispatch('setToken', null);
+  } else { // 만료 기간이 안 지났으면 header에 token을 넣어서 전달
+    axios.defaults.headers.common['Authorization'] = JSON.parse(accessToken).token;
   }
 }
 

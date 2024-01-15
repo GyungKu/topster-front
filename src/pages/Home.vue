@@ -26,7 +26,7 @@ export default {
       topsters: []
     });
     onMounted(() => {
-      axios.get(`users/${2}/topsters`).then((res) => {
+      axios.get(`/topsters/top-three`).then((res) => {
         state.topsters = res.data;
       })
       .catch(() => {

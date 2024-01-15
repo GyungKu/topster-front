@@ -108,7 +108,7 @@ export default {
     },
 
     likeTopster() {
-      axios.post(`topsters/${this.topster.id}/like`)
+      axios.post(`topster/${this.topster.id}/like`)
       .then(() => {
         alert('좋아요!');
       })
