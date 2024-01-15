@@ -1,37 +1,56 @@
 <template>
-  <div class="card shadow-sm">
-    <div class="image-container">
-      <!-- TopsterCard 컴포넌트를 사용하여 이미지 표시 -->
-      <ImageCard v-for="(album, idx) in topster.albums" :key="idx" :albumImage="album.image" :album="album" class="img"
-                   @card-clicked="handleCardClicked(album)"/>
-      <!-- 9개의 빈 아이템을 추가 -->
-      <div v-for="index in Math.max(9 - topster.albums.length, 0)" :key="`empty-${index}`" class="item empty"></div>
-    </div>
-    <div class="card-body">
-      <p class="card-text">제목 : {{ topster.title }}</p>
-      <div class="d-flex justify-content-between align-items-center">
-        <div v-if="noPost != 'no'">
-          <router-link :to="{name: 'postRegister', params: {topsterId: topster.id}}"
-                       class="btn btn-primary">게시글 작성하기</router-link>
+  <div :class="{ 'topster-card-container-no-center': !centerAlign }">
+    <div :class="{ 'topster-card-container-center': centerAlign }">
+      <div class="card shadow-sm">
+        <div class="image-container">
+          <!-- TopsterCard 컴포넌트를 사용하여 이미지 표시 -->
+          <ImageCard v-for="(album, idx) in topster.albums || []" :key="idx"
+                     :albumImage="album.image" :album="album" class="img"
+                     @card-clicked="handleCardClicked(album)"/>
+          <!-- 9개의 빈 아이템을 추가 -->
+          <div v-for="index in Math.max(9 - (topster.albums?.length || 0), 0)"
+               :key="`empty-${index}`" class="item empty"></div>
         </div>
+        <div class="card-body">
+          <p class="card-text">제목 : {{ topster.title }}</p>
+          <div>작성자 : {{ topster.author }}</div>
+          <div>작성일 : {{ formatDate(topster.createdAt) }}</div>
+          <div>좋아요 : 10</div>
+        </div>
+        <div v-if="!noBtn && store.state.token !== null" class="d-flex justify-content-between align-items-center">
+          <div>
+            <router-link v-if="!noPost" :to="{name: 'postRegister', params: {topsterId: topster.id}}" class="btn btn-primary">게시글 작성하기</router-link>
+            <button v-if="!noPost" @click="deleteTopster" class="btn btn-danger">삭제</button>
+          </div>
+          <button @click="likeTopster" class="btn btn-success">좋아요</button>
+        </div>
+
+        <AlbumDetail v-if="isModalOpen" :album="album" @close-modal="closeModal"/>
       </div>
-      <div>작성자 : {{ topster.author }}</div>
-      <div>작성일 : {{ formatDate(topster.createdAt) }}</div>
     </div>
-    <AlbumDetail v-if="isModalOpen" :album="album" @close-modal="closeModal" />
   </div>
 </template>
 
 <script>
 import AlbumDetail from "@/components/AlbumDetail.vue"; // AlbumDetail 컴포넌트 추가
 import ImageCard from "@/components/ImageCard.vue";
+import axios from "axios";
+import store from "@/scripts/store";
 
 export default {
   name: "TopsterCard",
-  components: {ImageCard, AlbumDetail }, // AlbumDetail 컴포넌트 등록
+  components: {ImageCard, AlbumDetail}, // AlbumDetail 컴포넌트 등록
   props: {
     topster: Object,
-    noPost: null
+    noPost: {
+      type: String,
+      default: null,
+    },
+    noBtn: {
+      type: String,
+      default: null,
+    },
+    centerAlign: null,
   },
   data() {
     return {
@@ -40,6 +59,9 @@ export default {
     };
   },
   computed: {
+    store() {
+      return store
+    },
     reversAlbums() {
       return this.topster.albums.slice().reverse();
     }
@@ -63,8 +85,36 @@ export default {
     },
 
     formatDate(dateTimeString) {
-      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+      const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      };
       return new Date(dateTimeString).toLocaleDateString(undefined, options);
+    },
+
+    deleteTopster() {
+      axios.delete(`/topsters/${this.topster.id}`)
+      .then(() => {
+        alert('삭제 성공');
+        location.reload();
+      })
+      .catch(() => {
+        alert('본인의 탒스터가 아닙니다!');
+      })
+    },
+
+    likeTopster() {
+      axios.post(`topster/${this.topster.id}/like`)
+      .then(() => {
+        alert('좋아요!');
+      })
+      .catch(() => {
+        alert('좋아요 실패!');
+      })
     },
 
   },
@@ -91,6 +141,7 @@ export default {
   margin: 5px;
   background-color: #f0f0f0;
 }
+
 .album-detail {
   /* 모달 스타일 */
   position: fixed;
@@ -102,5 +153,17 @@ export default {
   padding: 20px;
   border: 1px solid #ccc;
   z-index: 999; /* 원하는 높은 숫자로 설정 */
+}
+
+.topster-card-container-center {
+  /* 추가한 스타일: 최대 너비를 400px로 지정 (혹은 원하는 크기로 조절) */
+  max-width: 400px;
+  /* 추가한 스타일: 가로 중앙 정렬 */
+  margin: 0 auto;
+}
+
+.topster-card-container-no-center {
+  /* 추가한 스타일: 최대 너비를 400px로 지정 (혹은 원하는 크기로 조절) */
+  max-width: 400px;
 }
 </style>

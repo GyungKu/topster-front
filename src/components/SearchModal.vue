@@ -1,7 +1,7 @@
 <template>
   <div class="search-modal">
     <h2>가수 검색 창</h2>
-    <input v-model="query" placeholder="가수 이름을 입력하세요"/>
+    <input v-model="query" placeholder="가수 이름을 입력하세요" @keydown.enter="search"/>
     <button @click="search">검색</button>
 
     <div class="search-results-container">
@@ -36,7 +36,7 @@ export default {
       })
       .then(response => {
         if (response.data.code == '1009') {
-          global.alert('로그인이 필요한 기능입니다.');
+          alert('로그인이 필요한 기능입니다.');
           router.push('/login');
         }
         this.albums = response.data;

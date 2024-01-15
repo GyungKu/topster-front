@@ -14,6 +14,9 @@
                 <a to="/login" class="text-white" @click="logout()" v-else>로그아웃</a>
               </li>
               <li>
+                <router-link :to="{name: 'signup'}" class="text-white" v-if="!$store.state.token">회원가입</router-link>
+              </li>
+              <li>
                 <router-link :to="{name: 'board'}" class="text-white" >게시판</router-link>
               </li>
               <li>
@@ -58,6 +61,7 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('logout');
+      location.reload();
     }
   }
 }

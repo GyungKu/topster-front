@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopsterCard :topster="state.topster" :noPost="''" v-if="state.topster != null" />
+    <TopsterCard :topster="state.topster" :no-btn="'no'" v-if="state.topster != null" />
     <form @submit.prevent="submitPost">
       <label for="title">제목:</label>
       <input type="text" v-model="title" id="title" required>
@@ -39,7 +39,7 @@ export default {
       })
       .catch(err => {
         const errInfo = err.response;
-        global.alert(errInfo.data);
+        alert(errInfo.data);
         router.push("/");
       });
     });
@@ -65,11 +65,11 @@ export default {
 
       axios.post(`/topster/${topsterId}/posts`, formData)
       .then(() => {
-        global.alert("등록 완료!");
+        alert("등록 완료!");
         router.push('/');
       })
       .catch((err) => {
-        global.alert(err.response.data.message);
+        alert(err.response.data.message);
         router.push('/');
       })
     }
