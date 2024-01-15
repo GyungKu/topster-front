@@ -41,9 +41,6 @@ export default {
         }
         this.albums = response.data;
       })
-      .catch(error => {
-        console.log(error);
-      });
     },
     selectItem(item) {
       // 선택된 아이템을 부모 컴포넌트로 전달
