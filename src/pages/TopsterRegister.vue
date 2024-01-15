@@ -60,7 +60,6 @@ export default {
         alert('더이상 추가할 수 없습니다.');
         return;
       }
-      // item.songs.forEach((name, idx) => console.log(`수록곡${idx+1} = ${name}`));
       this.selectedItems.push(item);
     },
     submitPost() {
