@@ -29,7 +29,7 @@ export default {
     return {
       post: {},
       comments: [],
-      topster: {},
+      topster: null,
     };
   },
   mounted() {
@@ -58,6 +58,8 @@ export default {
       console.error('댓글 목록을 불러오는 중 오류 발생:', error);
     });
   },
+
+
   methods: {
     submitComment(newComment,) {
       // 댓글 작성 API 호출
