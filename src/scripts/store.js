@@ -32,6 +32,7 @@ const store = createStore({
           expire: Date.now() + (60 * 60 * 1000),
         }
         localStorage.setItem("accessToken", JSON.stringify(accessToken));
+        location.reload();
       })
       .catch(() => {
         alert("로그인 실패");
