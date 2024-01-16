@@ -64,7 +64,7 @@ export default {
     };
   },
 
-  mounted() {
+  created() {
     axios.get(`topsters/${this.topster.id}/like-count/status`)
     .then((res) => {
       this.likes = res.data;
@@ -122,13 +122,16 @@ export default {
 
     likeTopster() {
       axios.post(`topsters/${this.topster.id}/like`)
-      .then((res) => {
-        const status = res.data.status;
-        if (status) {
-          alert('좋아요 취소 !');
-        } else {
-          alert('좋아요!');
-        }
+      .then(() => {
+        axios.get(`topsters/${this.topster.id}/like-count/status`)
+        .then((res) => {
+          const status = res.data.status;
+          if (status) {
+            alert('좋아요');
+          }else {
+            alert('좋아요 취소');
+          }
+        })
         this.reloadLike();
       })
       .catch(() => {
