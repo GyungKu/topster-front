@@ -15,14 +15,17 @@
           <p class="card-text">제목 : {{ topster.title }}</p>
           <div>작성자 : {{ topster.author }}</div>
           <div>작성일 : {{ formatDate(topster.createdAt) }}</div>
-          <div>좋아요 : 10</div>
+          <div v-if="likes != null">좋아요 : {{ likes.likeCount }}</div>
         </div>
         <div v-if="!noBtn && store.state.token !== null" class="d-flex justify-content-between align-items-center">
           <div>
             <router-link v-if="!noPost" :to="{name: 'postRegister', params: {topsterId: topster.id}}" class="btn btn-primary">게시글 작성하기</router-link>
             <button v-if="!noPost" @click="deleteTopster" class="btn btn-danger">삭제</button>
           </div>
-          <button @click="likeTopster" class="btn btn-success">좋아요</button>
+          <div v-if="likes != null">
+            <button v-if="likes.status == false" @click="likeTopster" class="btn btn-success">좋아요</button>
+            <button v-else @click="likeTopster" class="btn btn-success btn-danger">좋아요 취소</button>
+          </div>
         </div>
 
         <AlbumDetail v-if="isModalOpen" :album="album" @close-modal="closeModal"/>
@@ -52,12 +55,22 @@ export default {
     },
     centerAlign: null,
   },
+
   data() {
     return {
       isModalOpen: false,
       album: null,
+      likes: null,
     };
   },
+
+  created() {
+    axios.get(`topsters/${this.topster.id}/like-count/status`)
+    .then((res) => {
+      this.likes = res.data;
+    })
+  },
+
   computed: {
     store() {
       return store
@@ -108,14 +121,30 @@ export default {
     },
 
     likeTopster() {
-      axios.post(`topster/${this.topster.id}/like`)
+      axios.post(`topsters/${this.topster.id}/like`)
       .then(() => {
-        alert('좋아요!');
+        axios.get(`topsters/${this.topster.id}/like-count/status`)
+        .then((res) => {
+          const status = res.data.status;
+          if (status) {
+            alert('좋아요');
+          }else {
+            alert('좋아요 취소');
+          }
+        })
+        this.reloadLike();
       })
       .catch(() => {
         alert('좋아요 실패!');
       })
     },
+
+    reloadLike() {
+      axios.get(`topsters/${this.topster.id}/like-count/status`)
+      .then((res) => {
+        this.likes = res.data;
+      })
+    }
 
   },
 };

@@ -29,9 +29,6 @@ export default {
       axios.get(`/topsters/my`).then((res) => {
         state.topsters = res.data;
       })
-      .catch(() => {
-        console.log('탑스터가 없습니다!!!!');
-      })
     })
     return {state}
   }

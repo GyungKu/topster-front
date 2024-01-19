@@ -73,8 +73,6 @@ export default {
         certification:this.certification,
         intro:this.intro,
       }
-      console.log(this.email);
-      console.log(this.certification);
       axios.post("/users/signup", form)
       .then((res) => {
 
@@ -98,8 +96,6 @@ export default {
         email:this.email,
         certification:this.certification,
       }
-      console.log(this.email);
-      console.log(this.certification);
       axios.post("/users/mail/certification", form)
       .then(() => {
         alert("인증번호가 확인되었습니다.")
