@@ -78,6 +78,8 @@ export default {
           router.push('/login');
         }
 
+        alert('탑스터 등록 완료!');
+
         // 성공적으로 등록되면 데이터 초기화 또는 다른 동작 수행
         this.title = "";
         this.selectedItems = [];

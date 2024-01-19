@@ -40,8 +40,17 @@
 
 <script>
 import axios from "axios";
+import router from "@/scripts/router";
+import store from "@/scripts/store";
 
 export default {
+
+  mounted() {
+    if (store.state.token != null) {
+      router.push('/');
+    }
+  },
+
   data()  {
     return{
       username:"",
@@ -78,6 +87,7 @@ export default {
 
         if (res.data) {
           window.alert("회원가입이 완료되었습니다.");
+          router.push('/');
         } else {
           window.alert("회원가입이 실패하였습니다.");
         }

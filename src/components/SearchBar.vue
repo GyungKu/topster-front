@@ -18,19 +18,38 @@
 <script>
 
 export default {
+  props: {
+    my: null
+  },
+
   data() {
-    return {
-      selectList: [
-        {name: "선택해주세요", value: ""},
-        {name: "제목", value: "title"},
-        {name: "내용", value: "content"},
-        {name: "작성자", value: "author"},
-      ],
-      searchCond: {
-        searchKey: '',
-        query: '',
-      },
+    if (this.my == null) {
+      return {
+        selectList: [
+          {name: "선택해주세요", value: ""},
+          {name: "제목", value: "title"},
+          {name: "내용", value: "content"},
+          {name: "작성자", value: "author"},
+        ],
+        searchCond: {
+          searchKey: '',
+          query: '',
+        },
+      }
+    } else {
+      return {
+        selectList: [
+          {name: "선택해주세요", value: ""},
+          {name: "제목", value: "title"},
+          {name: "내용", value: "content"},
+        ],
+        searchCond: {
+          searchKey: '',
+          query: '',
+        },
+      }
     }
+
   },
 
   methods: {

@@ -25,6 +25,9 @@
               <li>
                 <router-link :to="{name: 'mypage'}" class="text-white" v-if="$store.state.token">마이페이지</router-link>
               </li>
+              <li>
+                <router-link :to="{name: 'topsters'}" class="text-white">탑스터 조회</router-link>
+              </li>
             </ul>
           </div>
         </div>
