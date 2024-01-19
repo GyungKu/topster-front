@@ -9,6 +9,10 @@ import TopsterRegister from "@/pages/TopsterRegister.vue";
 import Board from "@/pages/Board.vue";
 import MyTopster from "@/pages/MyTopster.vue";
 import PostEdit from "@/pages/PostEdit.vue";
+import TopsterList from "@/pages/TopsterList.vue";
+import MyProfile from "@/pages/MyProfile.vue";
+import ProfileEdit from "@/pages/ProfileEdit.vue";
+import MyPosts from "@/pages/MyPosts.vue";
 
 const routes = [
   {name: 'home', path: '/', component: Home},
@@ -21,7 +25,10 @@ const routes = [
   {name: 'postDetail', path: '/posts/:postId', component: PostDetail},
   {name: 'board', path: '/posts', component: Board},
   {name: 'myTopster', path: '/myTopster', component: MyTopster},
-  {name: 'postEdit', path: '/posts/:postId/edit', component: PostEdit},
+  {name: 'topsters', path: '/topsters', component: TopsterList},
+  {name: 'myProfile', path: '/myprofile', component: MyProfile},
+  {name: 'profileEdit', path: '/myprofile/edit', component: ProfileEdit},
+  {name: 'myPosts', path: '/posts/my', component: MyPosts},
 ]
 
 const router = createRouter({
