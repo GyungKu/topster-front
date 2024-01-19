@@ -24,6 +24,7 @@ const routes = [
   {name: 'postRegister', path: '/topster/:topsterId/posts', component: PostRegister},
   {name: 'postDetail', path: '/posts/:postId', component: PostDetail},
   {name: 'board', path: '/posts', component: Board},
+  {name: 'postEdit', path: '/posts/:postId/edit', component: PostEdit},
   {name: 'myTopster', path: '/myTopster', component: MyTopster},
   {name: 'topsters', path: '/topsters', component: TopsterList},
   {name: 'myProfile', path: '/myprofile', component: MyProfile},
