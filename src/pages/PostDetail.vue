@@ -69,7 +69,7 @@ export default {
       })
       .then((res) => {
         if (res.data.code == '1009') {
-          alert('로그인을 먼저 하십시오');
+          alert('로그인을 먼저 해주세요');
           const redirect = this.$route.path;
           router.push({name: 'login', query: {redirect: redirect}});
         }
