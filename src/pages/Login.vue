@@ -22,16 +22,8 @@
 
 
 import router from "@/scripts/router";
-import store from "@/scripts/store";
-import axios from "axios";
 
 export default {
-
-  mounted() {
-    if (store.state.token != null) {
-      router.push('/');
-    }
-  },
 
   data() {
     return {
@@ -47,22 +39,10 @@ export default {
         password: this.password
       };
 
-      axios.post("/users/login", userData, {withCredentials: true})
-      .then((res) => {
-        const token = res.headers['authorization'];
-        axios.defaults.headers.common['Authorization'] = token;
-        this.$store.dispatch('setToken', token);
-        const accessToken = {
-          token: token,
-          expire: Date.now() + (60 * 60 * 1000),
-        }
-        localStorage.setItem("accessToken", JSON.stringify(accessToken));
-        location.reload();
-      }).then(() => router.push('/'))
-      .catch(() => {
-        alert("로그인 실패");
-      });
-
+      this.$store.dispatch('login', userData).then(() => {
+        const redirect = this.$route.query.redirect || '/';
+        router.replace(redirect);
+      })
     }
   },
 }
