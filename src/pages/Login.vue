@@ -22,8 +22,15 @@
 
 
 import router from "@/scripts/router";
+import store from "@/scripts/store";
 
 export default {
+
+  mounted() {
+    if (store.state.token != null) {
+      router.push('/');
+    }
+  },
 
   data() {
     return {
