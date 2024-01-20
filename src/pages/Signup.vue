@@ -26,7 +26,7 @@
         <input type="text" class="form-control" id="floatingVerificationCode" placeholder="Verification Code" v-model="certification">
         <label for="floatingVerificationCode">인증번호를 입력해 주세요</label>
       </div>
-      <button class="btn btn-outline-secondary ms-2" @click="verifyCode">인증번호 확인</button>
+<!--      <button class="btn btn-outline-secondary ms-2" @click="verifyCode">인증번호 확인</button>-->
     </div>
     <div class="form-floating">
       <input type="intro" class="form-control" id="floatingInput" placeholder="intro" v-model="intro">
@@ -118,7 +118,7 @@ export default {
 
 <style scoped>
 .form-signup {
-  max-width: 330px;
+  max-width: 400px;
   padding: 1rem;
 }
 
@@ -133,21 +133,28 @@ export default {
 }
 
 .form-control {
-  padding-right: 100px;
+  padding-right: 10px; /* 예시: 작은 값으로 조정 */
 }
 .form-floating {
-  position: relative;
+  width: 100%;
 }
 
-.form-floating .form-control {
-  padding-right: 100px; /* 버튼이 있을 자리를 비워두기 위해 오른쪽 패딩을 추가합니다. */
+.form-floating .form-control,
+.form-floating .form-floating,
+.form-floating .btn {
+  position: relative;
+  width: 100%;
+}
+
+.form-floating .form-floating {
+  padding-right: 0;
 }
 
 .form-floating .btn {
-  position: absolute;
   right: 0;
-  top: 0;
-  height: 100%; /* 버튼의 높이를 input 필드와 동일하게 맞춥니다. */
-  z-index: 10; /* 필요하다면 z-index를 조절하여 버튼이 다른 요소 위에 오도록 합니다. */
+}
+
+.btn-outline-secondary {
+  width: 100px;
 }
 </style>
