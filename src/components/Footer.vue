@@ -10,7 +10,7 @@
         </div>
       </a>
     </div>
-    <p class="copyright">&copy; 2024 Your Website</p>
+    <p class="copyright">&copy; 2024 Topster 2</p>
   </footer>
 </template>
 
