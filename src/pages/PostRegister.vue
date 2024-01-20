@@ -73,10 +73,11 @@ export default {
       .catch((err) => {
         const errors = err.response.data.data;
         errors.forEach(error => {
-          if (error.field === 'title') {
+          const field = error.field;
+          if (field === 'title') {
             this.titleError = error;
           }
-          if (error.field === 'content') {
+          if (field === 'content') {
             this.contentError = error;
           }
         })
