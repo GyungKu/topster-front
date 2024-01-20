@@ -25,7 +25,7 @@ jobs:
         run: |
           VERSION=$(aws elasticbeanstalk describe-environments --application-name ${{ secrets.AWS_APP_NAME }} --environment-names ${{ secrets.AWS_APP_ENV_NAME }} --query "Environments[0].VersionLabel" --output text)
           echo "Current version: $VERSION"
-          echo "::set-output name=version::$VERSION"
+          echo "version=$VERSION" >> $GITHUB_ENV
 
       - name: Redeploy existing version
         run: |
