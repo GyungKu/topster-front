@@ -20,6 +20,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-region: ap-northeast-2
 
+      # 현재 EB의 버전을 구해온다
       - name: Get current application version
         id: get-version
         run: |
@@ -27,6 +28,7 @@ jobs:
           echo "Current version: $VERSION"
           echo "version=$VERSION" >> $GITHUB_ENV
 
+      # EB의 버전을 새로 배포한다 ( 새로 배포하면서 다시 pull을 당기기 때문에 프론트 업데이트도 이루어 진다. )
       - name: Redeploy existing version
         run: |
           aws elasticbeanstalk update-environment --application-name ${{ secrets.AWS_APP_NAME }} --environment-name ${{ secrets.AWS_APP_ENV_NAME }} --version-label ${{ env.version }}
