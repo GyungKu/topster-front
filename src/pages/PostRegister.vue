@@ -2,10 +2,10 @@
   <div>
     <TopsterCard :topster="state.topster" :no-btn="'no'" v-if="state.topster != null" />
     <form @submit.prevent="submitPost">
-      <label for="title">제목:</label>
+      <label for="title">제목:<p class="inputError" v-if="titleError != null">{{ titleError.message }}</p></label>
       <input type="text" v-model="title" id="title" required>
 
-      <label for="content">내용:</label>
+      <label for="content">내용:<p class="inputError" v-if="contentError != null">{{ contentError.message }}</p></label>
       <textarea v-model="content" id="content" required></textarea>
 
       <button type="submit">게시글 작성</button>
@@ -50,7 +50,9 @@ export default {
   data() {
     return {
       title: "",
-      content: ""
+      content: "",
+      titleError: null,
+      contentError: null
     }
   },
 
@@ -69,8 +71,16 @@ export default {
         router.push('/');
       })
       .catch((err) => {
-        alert(err.response.data.message);
-        router.push('/');
+        const errors = err.response.data.data;
+        errors.forEach(error => {
+          const field = error.field;
+          if (field === 'title') {
+            this.titleError = error;
+          }
+          if (field === 'content') {
+            this.contentError = error;
+          }
+        })
       })
     }
 
@@ -120,5 +130,9 @@ button {
 
 button:hover {
   background-color: #45a049;
+}
+
+.inputError {
+  color: red;
 }
 </style>

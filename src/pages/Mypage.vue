@@ -1,10 +1,9 @@
 <template>
   <div>
     <h1>내 정보 페이지</h1>
-    <button onclick="location.href='#'" class="mypage-button">내 프로필</button>
+    <router-link :to="{name: 'myProfile'}" class="mypage-button">내 프로필</router-link>
     <router-link :to="{name: 'myTopster'}" class="mypage-button">내 탑스터</router-link>
-    <button onclick="location.href='#'" class="mypage-button">정보 수정</button>
-    <button onclick="location.href='#'" class="mypage-button">내 게시글</button>
+    <router-link :to="{name: 'myPosts'}" class="mypage-button">내 게시글</router-link>
   </div>
 </template>
 

@@ -21,6 +21,7 @@ import TopsterCard from "@/components/TopsterCard.vue";
 export default {
   name: "MyTopster",
   components: {TopsterCard,},
+
   setup() {
     const state = reactive({
       topsters: []
@@ -29,6 +30,11 @@ export default {
       axios.get(`/topsters/my`).then((res) => {
         state.topsters = res.data;
       })
+      .catch(err => {
+        if (err.response.data.code === 'T1002') {
+          alert('탑스터가 존재하지 않습니다.');
+        }
+      });
     })
     return {state}
   }
