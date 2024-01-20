@@ -93,11 +93,7 @@ export default {
         }
       })
       .catch((err) => {
-        // 서버가 오류 응답을 보냈을 때의 상태 코드와 오류 메시지를 확인합니다.
-        const message = (err.response && err.response.data && err.response.data.message)
-            ? err.response.data.message
-            : "인증번호 검증 과정에서 문제가 발생했습니다.";
-        window.alert(message);
+        alert(err.response.data.message);
       });
     },
 
@@ -111,11 +107,7 @@ export default {
         alert("인증번호가 확인되었습니다.")
       })
       .catch((err) => {
-        // 서버가 오류 응답을 보냈을 때의 상태 코드와 오류 메시지를 확인합니다.
-        const message = (err.response && err.response.data && err.response.data.message)
-            ? err.response.data.message
-            : "인증번호 검증 과정에서 문제가 발생했습니다.";
-        window.alert(message);
+        alert(err.response.data.message);
       });
     },
   }
