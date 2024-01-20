@@ -14,7 +14,7 @@ jobs:
       - run: docker push gyungku/topster-front # docker hub에 push
 
       - name: Setup AWS CLI
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
@@ -29,4 +29,4 @@ jobs:
 
       - name: Redeploy existing version
         run: |
-          aws elasticbeanstalk update-environment --application-name ${{ secrets.AWS_APP_NAME }} --environment-name ${{ secrets.AWS_APP_ENV_NAME }} --version-label ${{ steps.get-version.outputs.version }}
+          aws elasticbeanstalk update-environment --application-name ${{ secrets.AWS_APP_NAME }} --environment-name ${{ secrets.AWS_APP_ENV_NAME }} --version-label ${{ env.version }}
