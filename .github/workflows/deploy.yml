@@ -14,7 +14,7 @@ jobs:
       - run: docker push gyungku/topster-front # docker hub에 push
 
       - name: Generate deployment package
-        run: zip -r deploy.zip . -i 'docker-compose.yml'
+        run: zip -r deploy.zip . -x '*.git*'
 
       # elastic beanstalk에 배포
       - name: Deploy to EB
