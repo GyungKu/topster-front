@@ -23,6 +23,7 @@
 
 import router from "@/scripts/router";
 import store from "@/scripts/store";
+import axios from "axios";
 
 export default {
 
@@ -46,10 +47,21 @@ export default {
         password: this.password
       };
 
-      this.$store.dispatch('login', userData).then(() => {
-        const redirect = this.$route.query.redirect || '/';
-        router.replace(redirect);
-      })
+      axios.post("/users/login", userData, {withCredentials: true})
+      .then((res) => {
+        const token = res.headers['authorization'];
+        axios.defaults.headers.common['Authorization'] = token;
+        this.$store.dispatch('setToken', token);
+        const accessToken = {
+          token: token,
+          expire: Date.now() + (58 * 60 * 1000),
+        }
+        localStorage.setItem("accessToken", JSON.stringify(accessToken));
+        location.reload();
+      }).then(() => router.push('/'))
+      .catch(() => {
+        alert("아이디 또는 비밀번호를 다시 확인해 주세요");
+      });
     }
   },
 }
