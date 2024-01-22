@@ -27,7 +27,6 @@ export default {
   data() {
     return {
       page: 1,
-      max: 9,
       topsters: [],
       totalPages: 1, // totalPages를 추가합니다.
       totalPageArray: [],
@@ -39,8 +38,8 @@ export default {
       topsters: []
     });
     onMounted(() => {
-      // const queryString = `?page=${this.page}&max=${this.max}`;
-      axios.get(`/topsters/my`).then((res) => {
+      const queryString = `?page=${this.page}`;
+      axios.get(`/topsters` + queryString).then((res) => {
         state.topsters = res.data;
       })
       .catch(err => {

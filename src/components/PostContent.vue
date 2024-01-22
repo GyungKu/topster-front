@@ -38,6 +38,7 @@ export default {
     deletePost() {
       axios.delete(`/posts/${this.post.id}`).then((res) => {
         alert(res.data.message);
+        router.push({name: "board"});
       }).catch((err) => {
         alert(err.response.data.message);
       })

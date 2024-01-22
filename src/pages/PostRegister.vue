@@ -72,6 +72,8 @@ export default {
       })
       .catch((err) => {
         const errors = err.response.data.data;
+        this.titleError = null;
+        this.contentError = null;
         errors.forEach(error => {
           const field = error.field;
           if (field === 'title') {

@@ -9,33 +9,52 @@ const app = createApp(App);
 axios.defaults.baseURL = '/api/v1';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 
-
-// 로그인이 필요한 페이지
-const needLogin = ['mypage', 'topsterRegister', 'postRegister'];
-
-const accessToken = localStorage.getItem("accessToken");
-
 router.beforeEach((to, from, next) => {
-  if (needLogin.includes(to.name) && !store.state.token) {
-    alert('로그인이 필요합니다');
-    next({
-      name:'login',
-      query: {redirect:to.fullPath},
-    });
+
+  const accessToken = localStorage.getItem("accessToken");
+
+  // access token이 존재하고, 유효기간이 지나지 않았다면 이동
+  if (accessToken && Date.now() < accessToken.expire) {
+    next();
+    return;
   }
-  next();
+
+  localStorage.removeItem("accessToken"); // localStorage에 있는 accessToken을 제거
+  const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
+  if (!refreshToken || Date.now() >= refreshToken.expire) {
+    axios.defaults.headers.common['authorization'] = null;
+    localStorage.removeItem("refreshToken");
+
+    const needLogin = ['mypage', 'topsterRegister', 'postRegister'];
+    if (needLogin.includes(to.name)) {
+      alert('로그인이 필요합니다');
+      next({
+        name: 'login',
+        query: {redirect: to.fullPath},
+      });
+    }
+    next();
+    return;
+  }
+
+  axios.get("/users/refresh-token", {
+    headers: {
+      refreshToken: refreshToken.token
+    }
+  }).then(res => {
+    const newAccess = res.headers['authorization'];
+    const accessToken = {
+      token: newAccess,
+      expire: Date.now() + (58 * 60 * 1000),
+    }
+    axios.defaults.headers.common['authorization'] = newAccess;
+    store.commit('setToken', newAccess);
+    localStorage.setItem("accessToken", JSON.stringify(accessToken));
+    next();
+  })
+
 })
 
-if (store.state.token) { // accessToken이 존재하면
-  if (Date.now() >= accessToken.expire) { // 만료기간이 지났다면 localStorage에서 제거
-    localStorage.removeItem("accessToken");
-    store.dispatch('setToken', null);
-  } else { // 만료 기간이 안 지났으면 header에 token을 넣어서 전달
-    axios.defaults.headers.common['Authorization'] = JSON.parse(accessToken).token;
-  }
-}
-
 app.config.globalProperties.axios = axios;
-
 
 app.use(store).use(router).mount('#app');
