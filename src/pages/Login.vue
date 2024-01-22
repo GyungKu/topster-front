@@ -49,14 +49,20 @@ export default {
 
       axios.post("/users/login", userData, {withCredentials: true})
       .then((res) => {
-        const token = res.headers['authorization'];
-        axios.defaults.headers.common['Authorization'] = token;
-        this.$store.dispatch('setToken', token);
+        const access = res.headers['authorization'];
+        const refresh = res.headers['refreshtoken'];
+        axios.defaults.headers.common['authorization'] = access;
+        this.$store.dispatch('setToken', access);
         const accessToken = {
-          token: token,
+          token: access,
           expire: Date.now() + (58 * 60 * 1000),
         }
+        const refreshToken = {
+          token: refresh,
+          expire: Date.now() + (60 * 60 * 1000 * 24 * 7) - 6000
+        }
         localStorage.setItem("accessToken", JSON.stringify(accessToken));
+        localStorage.setItem("refreshToken", JSON.stringify(refreshToken));
         location.reload();
       }).then(() => router.push('/'))
       .catch(() => {
