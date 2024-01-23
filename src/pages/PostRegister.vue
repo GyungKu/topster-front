@@ -66,9 +66,10 @@ export default {
       const topsterId = this.$route.params.topsterId;
 
       axios.post(`/topster/${topsterId}/posts`, formData)
-      .then(() => {
+      .then(res => {
+        const postId = res.data.message.substr(0, 1);
         alert("등록 완료!");
-        router.push('/');
+        router.push(`/posts/${postId}`);
       })
       .catch((err) => {
         const errors = err.response.data.data;
