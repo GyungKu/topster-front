@@ -41,6 +41,15 @@ export default {
         }
         this.albums = response.data;
       })
+      .catch(err => {
+        const errorCode = err.response.data.code;
+        if (errorCode === 'A1000') {
+          alert('검색된 자료가 없습니다!');
+        }
+        if (err.response.status === 500) {
+          alert('서버에 문제가 생겼습니다.');
+        }
+      })
     },
     selectItem(item) {
       // 선택된 아이템을 부모 컴포넌트로 전달
