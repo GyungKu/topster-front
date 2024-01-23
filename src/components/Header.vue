@@ -3,33 +3,52 @@
     <div class="collapse text-bg-dark" id="navbarHeader">
       <div class="container">
         <div class="row">
+          <h4>사이트맵</h4>
           <div class="col-sm-4 py-4">
-            <h4>사이트맵</h4>
             <ul class="list-unstyled">
               <li>
                 <router-link :to="{name: 'home'}" class="text-white">메인화면</router-link>
               </li>
               <li>
                 <router-link :to="{name: 'login'}" class="text-white" v-if="!$store.state.token">로그인</router-link>
-                <a to="/login" class="text-white" @click="logout()" v-else>로그아웃</a>
+                <a href="#" class="text-white" @click="logout()" v-else>로그아웃</a>
               </li>
               <li>
                 <router-link :to="{name: 'signup'}" class="text-white" v-if="!$store.state.token">회원가입</router-link>
               </li>
-              <li>
-                <router-link :to="{name: 'board'}" class="text-white" >게시판</router-link>
-              </li>
+            </ul>
+          </div>
+
+          <div class="col-sm-4 py-4">
+            <ul class="list-unstyled">
               <li>
                 <router-link :to="{name: 'topsterRegister'}" class="text-white" v-if="$store.state.token">탑스터 등록</router-link>
               </li>
               <li>
-                <router-link :to="{name: 'mypage'}" class="text-white" v-if="$store.state.token">마이페이지</router-link>
+                <router-link :to="{name: 'topsters'}" class="text-white">탑스터 조회</router-link>
               </li>
               <li>
-                <router-link :to="{name: 'topsters'}" class="text-white">탑스터 조회</router-link>
+                <router-link :to="{name: 'board'}" class="text-white" >게시판</router-link>
               </li>
             </ul>
           </div>
+
+          <div class="col-sm-4 py-4" v-if="$store.state.token">
+            <ul class="list-unstyled">
+              <li>
+                <router-link :to="{name: 'mypage'}" class="text-white">마이페이지</router-link>
+              </li>
+              <li>
+                <router-link :to="{name: 'myProfile'}" class="text-white">내 프로필</router-link>
+              </li>
+              <li>
+                <router-link :to="{name: 'myTopster'}" class="text-white">내 탑스터</router-link>
+              </li>
+              <li>
+                <router-link :to="{name: 'myPosts'}" class="text-white">내 게시글</router-link>
+              </li>
+            </ul>
+        </div>
         </div>
       </div>
     </div>
@@ -70,4 +89,9 @@ export default {
 }
 </script>
 <style scoped>
+
+.text-white {
+  text-decoration: none;
+}
+
 </style>
