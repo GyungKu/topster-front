@@ -4,8 +4,8 @@
     <div class="album py-5 bg-body-tertiary">
       <div class="container">
 
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-          <TopsterCard v-for="(topster, idx) in state.topsters" :key="idx" :topster="topster"/>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" v-if="topsters != null">
+          <TopsterCard v-for="(topster, idx) in topsters" :key="idx" :topster="topster"/>
         </div>
       </div>
 
@@ -16,9 +16,9 @@
 
 <script>
 import axios from "axios";
-import {onMounted, reactive} from "vue";
 import TopsterCard from "@/components/TopsterCard.vue";
 import Pagination from "@/components/Pagination.vue";
+import router from "@/scripts/router";
 
 export default {
   name: "topsters",
@@ -33,23 +33,44 @@ export default {
     };
   },
 
-  setup() {
-    const state = reactive({
-      topsters: []
-    });
-    onMounted(() => {
-      const queryString = `?page=${this.page}`;
-      axios.get(`/topsters` + queryString).then((res) => {
-        state.topsters = res.data;
-      })
-      .catch(err => {
-        if (err.response.data.code === 'T1002') {
-          alert('탑스터가 존재하지 않습니다.');
-        }
-      });
+  mounted() {
+    alert('미구현 페이지!');
+    router.push('/');
+    const queryString = `?page=${this.page}`;
+    axios.get(`/topsters` + queryString).then((res) => {
+      this.topsters = res.data;
     })
-    return {state}
+    .catch(err => {
+      if (err.response.data.code === 'T1002') {
+        alert('탑스터가 존재하지 않습니다.');
+      }
+      if (err.response.status == 500) {
+        alert('죄송합니다 서버에 문제가 생겼습니다.');
+      }
+    });
   },
+
+  // setup() {
+  //   const state = reactive({
+  //     topsters: [],
+  //     page: 1,
+  //     totalPages: 1,
+  //     totalPageArray: [],
+  //   });
+  //
+  //   onMounted(() => {
+  //     const queryString = `?page=${state.page}`;
+  //     axios.get(`/topsters` + queryString).then((res) => {
+  //       state.topsters = res.data;
+  //     })
+  //     .catch(err => {
+  //       if (err.response.data.code === 'T1002') {
+  //         alert('탑스터가 존재하지 않습니다.');
+  //       }
+  //     });
+  //   })
+  //   return {state}
+  // },
 
   methods: {
 

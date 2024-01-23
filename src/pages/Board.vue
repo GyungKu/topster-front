@@ -1,7 +1,7 @@
 <template>
     <div class="page-title">
       <div class="container">
-        <h3>자유 게시판</h3>
+        <h3>탑스터 공유 게시판</h3>
       </div>
     </div>
 
@@ -78,7 +78,11 @@ export default {
 
   mounted() {
     axios.get("/posts").then((res) => {
-      this.posts = res.data.content;
+      const content = res.data.content;
+      if (content.length === 0) {
+        alert('결과가 없습니다.');
+      }
+      this.posts = content;
     })
   },
   methods: {
@@ -87,7 +91,11 @@ export default {
 
       axios.get(`/posts${queryString}`)
       .then(response => {
-        this.posts = response.data.content;
+        const content = response.data.content;
+        if (content.length === 0) {
+          alert('결과가 없습니다.');
+        }
+        this.posts = content;
         this.totalPages = response.data.totalPages;
         this.totalPageArray = this.generatePageArray;
       })
