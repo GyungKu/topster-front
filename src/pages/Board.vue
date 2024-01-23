@@ -1,7 +1,7 @@
 <template>
     <div class="page-title">
       <div class="container">
-        <h3>자유 게시판</h3>
+        <h3>탑스터 공유 게시판</h3>
       </div>
     </div>
 
