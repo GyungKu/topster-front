@@ -43,7 +43,7 @@ export default {
       })
       .catch(err => {
         const errorCode = err.response.data.code;
-        if (errorCode === 'A1000') {
+        if (errorCode === 'O1000') {
           alert('검색된 자료가 없습니다!');
         }
         if (err.response.status === 500) {

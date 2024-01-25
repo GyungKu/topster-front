@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <h2 class="title">탑스터 조회</h2>
 
     <div class="album py-5 bg-body-tertiary">
       <div class="container">
@@ -18,7 +19,6 @@
 import axios from "axios";
 import TopsterCard from "@/components/TopsterCard.vue";
 import Pagination from "@/components/Pagination.vue";
-import router from "@/scripts/router";
 
 export default {
   name: "topsters",
@@ -27,18 +27,17 @@ export default {
   data() {
     return {
       page: 1,
-      topsters: [],
+      topsters: null,
       totalPages: 1, // totalPages를 추가합니다.
       totalPageArray: [],
     };
   },
 
   mounted() {
-    alert('미구현 페이지!');
-    router.push('/');
-    const queryString = `?page=${this.page}`;
-    axios.get(`/topsters` + queryString).then((res) => {
-      this.topsters = res.data;
+    axios.get(`/topsters?page=${this.page}`)
+    .then((res) => {
+      this.topsters = res.data.content;
+      this.totalPages = res.data.totalPages;
     })
     .catch(err => {
       if (err.response.data.code === 'T1002') {
@@ -75,8 +74,7 @@ export default {
   methods: {
 
     search() {
-      const queryString = `?page=${this.page}&max=${this.max}`;
-      axios.get(`/topster/my${queryString}`)
+      axios.get(`/topsters?page=${this.page}`)
       .then(res => {
         this.topsters = res.data.content;
         this.totalPages = res.data.totalPages;
@@ -128,5 +126,7 @@ export default {
 </script>
 
 <style scoped>
-
+.title {
+  text-align: center;
+}
 </style>
