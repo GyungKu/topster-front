@@ -19,7 +19,7 @@
         </div>
         <div v-if="!noBtn && store.state.token !== null" class="d-flex justify-content-between align-items-center">
           <div>
-            <router-link v-if="!noPost" :to="{name: 'postRegister', params: {topsterId: topster.id}}" class="btn btn-primary">게시글 작성하기</router-link>
+            <button v-if="!noPost" @click="isAuthor" class="btn btn-primary">게시글 작성하기</button>
             <button v-if="!noPost" @click="deleteTopster" class="btn btn-danger">삭제</button>
           </div>
           <div v-if="likes != null">
@@ -39,6 +39,7 @@ import AlbumDetail from "@/components/AlbumDetail.vue"; // AlbumDetail 컴포넌
 import ImageCard from "@/components/ImageCard.vue";
 import axios from "axios";
 import store from "@/scripts/store";
+import router from "@/scripts/router";
 
 export default {
   name: "TopsterCard",
@@ -143,6 +144,14 @@ export default {
       axios.get(`topsters/${this.topster.id}/like-count/status`)
       .then((res) => {
         this.likes = res.data;
+      })
+    },
+
+    isAuthor() {
+      axios.get(`/topsters/${this.topster.id}/isAuthor`).then(() => {
+        router.push({name: 'postRegister', params: {topsterId: this.topster.id}})
+      }).catch(() => {
+        alert('본인의 탑스터가 아닙니다.');
       })
     }
 
