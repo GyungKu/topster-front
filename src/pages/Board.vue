@@ -1,7 +1,7 @@
 <template>
     <div class="page-title">
       <div class="container">
-        <h3>탑스터 공유 게시판</h3>
+        <h3>탑스터 공유 게시판(본인의 탑스터를 통해서만 게시글 작성이 가능합니다)</h3>
       </div>
     </div>
 
