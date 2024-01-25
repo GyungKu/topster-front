@@ -67,8 +67,7 @@ export default {
 
       axios.post(`/topster/${topsterId}/posts`, formData)
       .then((res) => {
-        const postId = res.data.message.substr(0, 1);
-        console.log(postId);
+        const postId = res.data.message;
         alert("등록 완료!");
         router.push({name: 'postDetail', params: {postId: postId}});
       })
