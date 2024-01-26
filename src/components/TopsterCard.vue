@@ -116,8 +116,8 @@ export default {
         alert('삭제 성공');
         location.reload();
       })
-      .catch(() => {
-        alert('본인의 탒스터가 아닙니다!');
+      .catch((err) => {
+        alert(err.response.message);
       })
     },
 
