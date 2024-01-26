@@ -23,6 +23,11 @@ const store = createStore({
     },
   },
   actions: {
+
+    setToken({commit}, accessToken) {
+      commit('setToken', accessToken);
+    },
+
     logout({commit}) {
       alert('로그아웃 성공');
       localStorage.removeItem("accessToken");
