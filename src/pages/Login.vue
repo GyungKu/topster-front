@@ -13,7 +13,8 @@
     </div>
 
     <button class="btn btn-primary w-100 py-2" @click="submit">로그인</button>
-    <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2023</p>
+    <a href="https://kauth.kakao.com/oauth/authorize?client_id=b7211278cf52bd7297f5a142941232c6&redirect_uri=https://topster2.site/api/v1/users/kakao/callback&response_type=code"><img src="@/assets/kakao_login_medium.png"></a>
+
   </div>
 </template>
 
