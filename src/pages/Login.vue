@@ -13,8 +13,7 @@
     </div>
 
     <button class="btn btn-primary w-100 py-2" @click="submit">로그인</button>
-    <a href="https://kauth.kakao.com/oauth/authorize?client_id=b859f62f2c55ad0ef2958b9df52df9c2&redirect_uri=http://topster-v2-env.eba-jxqxbtyj.ap-northeast-2.elasticbeanstalk.com/api/v1/users/kakao/callback&response_type=code"><img src="@/assets/kakao_login_medium.png"></a>
-    <a href="https://kauth.kakao.com/oauth/authorize?client_id=b859f62f2c55ad0ef2958b9df52df9c2&redirect_uri=https://topster2.site/api/v1/users/kakao/callback&response_type=code"><img src="@/assets/kakao_login_medium.png"></a>
+    <a href="https://kauth.kakao.com/oauth/authorize?client_id=b859f62f2c55ad0ef2958b9df52df9c2&redirect_uri=https://www.topster2.site/api/v1/users/kakao/callback&response_type=code"><img src="@/assets/kakao_login_medium.png"></a>
 
   </div>
 </template>
