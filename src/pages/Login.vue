@@ -13,7 +13,7 @@
     </div>
 
     <button class="btn btn-primary w-100 py-2" @click="submit">로그인</button>
-<!--    <a href="https://kauth.kakao.com/oauth/authorize?client_id=b859f62f2c55ad0ef2958b9df52df9c2&redirect_uri=https://www.topster2.site/api/v1/users/kakao/callback&response_type=code"><img src="@/assets/kakao_login_medium.png"></a>-->
+    <a href="#" @click="kakaoLogin"><img src="@/assets/kakao_login_medium.png"></a>
 
   </div>
 </template>
@@ -69,8 +69,17 @@ export default {
       .catch(() => {
         alert("아이디 또는 비밀번호를 다시 확인해 주세요");
       });
+    },
+
+    kakaoLogin() {
+      const redirectUrl = "https://topster2.site/kakaojoin";
+      const clientId = "b859f62f2c55ad0ef2958b9df52df9c2";
+      const authUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=code`;
+      window.location.href = authUrl;
+      },
+
     }
-  },
+
 }
 </script>
 

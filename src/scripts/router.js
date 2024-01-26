@@ -13,6 +13,7 @@ import TopsterList from "@/pages/TopsterList.vue";
 import MyProfile from "@/pages/MyProfile.vue";
 import ProfileEdit from "@/pages/ProfileEdit.vue";
 import MyPosts from "@/pages/MyPosts.vue";
+import KakaoJoin from "@/components/kakaoJoin.vue";
 
 const routes = [
   {name: 'home', path: '/', component: Home},
@@ -30,6 +31,7 @@ const routes = [
   {name: 'myProfile', path: '/myprofile', component: MyProfile},
   {name: 'profileEdit', path: '/myprofile/edit', component: ProfileEdit},
   {name: 'myPosts', path: '/posts/my', component: MyPosts},
+  {name: 'kakaoJoin', path: '/kakaojoin', component: KakaoJoin},
 ]
 
 const router = createRouter({
