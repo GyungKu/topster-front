@@ -72,7 +72,7 @@ export default {
     },
 
     kakaoLogin() {
-      const redirectUrl = "https://www.topster2.site/kakaojoin";
+      const redirectUrl = process.env.VUE_APP_KAKAO_REDIRECT_URL;
       const clientId = "b859f62f2c55ad0ef2958b9df52df9c2";
       const authUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=code`;
       window.location.href = authUrl;
