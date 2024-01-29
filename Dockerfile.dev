@@ -13,9 +13,10 @@ RUN npm install
 COPY . .
 
 # build 해준다
-ARG VUE_APP_KAKAO_REDIRECT_URL
+ARG VUE_APP_KAKAO_REDIRECT_URL=http://localhost/kakaojoin
+ARG VUE_APP_KAKAO_CLIENT_ID=b859f62f2c55ad0ef2958b9df52df9c2
 
-RUN VUE_APP_KAKAO_REDIRECT_URL=http://localhost/kakaojoin npm run build
+RUN npm run build
 
 # nginx
 FROM nginx
