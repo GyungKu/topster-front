@@ -52,7 +52,8 @@ export default {
 
     axios.get(`/posts/${postId}/comments`)
     .then(response => {
-      this.comments = response.data;
+      this.comments = response.data.content;
+      console.log(this.comments);
     })
     .catch(error => {
       console.error('댓글 목록을 불러오는 중 오류 발생:', error);
@@ -86,7 +87,7 @@ export default {
       const postId = this.$route.params.postId;
       axios.get(`/posts/${postId}/comments`)
       .then(response => {
-        this.comments = response.data;
+        this.comments = response.data.content;
       })
       .catch(error => {
         console.error('댓글 목록을 불러오는 중 오류 발생:', error);
