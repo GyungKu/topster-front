@@ -5,6 +5,11 @@
     <PostContent :post="post" />
 
     <CommentList :comments="comments" @delete-comment="deleteComment" @edit-comment="editComment" />
+    <div class="pagination">
+      <button @click="prevPage" :disabled="currentPage <= 1" class="pagination-button">이전</button>
+      <span class="pagination-current-page">{{ currentPage }}</span>
+      <button @click="nextPage" :disabled="currentPage >= lastPage" class="pagination-button">다음</button>
+    </div>
 
     <CommentForm @submit-comment="submitComment" />
   </div>
@@ -30,6 +35,8 @@ export default {
       post: {},
       comments: [],
       topster: null,
+      currentPage: 1,
+      lastPage: null,
     };
   },
   mounted() {
@@ -53,10 +60,10 @@ export default {
     axios.get(`/posts/${postId}/comments`)
     .then(response => {
       this.comments = response.data.content;
-      console.log(this.comments);
+      this.lastPage = response.data.totalPages;
     })
-    .catch(error => {
-      console.error('댓글 목록을 불러오는 중 오류 발생:', error);
+    .catch(() => {
+      alert('댓글 목록을 불러오는 중 오류 발생:');
     });
   },
 
@@ -85,9 +92,14 @@ export default {
     loadComments() {
       // 댓글 목록을 다시 불러오는 API 호출
       const postId = this.$route.params.postId;
-      axios.get(`/posts/${postId}/comments`)
+      axios.get(`/posts/${postId}/comments`, {
+        params: {
+          page: this.currentPage,
+        }
+      })
       .then(response => {
         this.comments = response.data.content;
+        this.lastPage = response.data.totalPages;
       })
       .catch(error => {
         console.error('댓글 목록을 불러오는 중 오류 발생:', error);
@@ -117,8 +129,47 @@ export default {
       .catch(() => {
         alert('본인의 댓글이 아닙니다.');
       })
-    }
+    },
+
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.loadComments();
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.lastPage) {  // 현재 페이지가 마지막 페이지보다 작은 경우에만 다음 페이지로 이동
+        this.currentPage++;
+        this.loadComments();
+      }
+    },
 
   },
 };
 </script>
+
+<style scoped>
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination-button {
+  padding: 10px;
+  margin: 0 5px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.pagination-button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+.pagination-current-page {
+  padding: 10px;
+}
+</style>
