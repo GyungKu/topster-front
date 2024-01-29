@@ -13,7 +13,9 @@ RUN npm install
 COPY . .
 
 # build 해준다
-RUN npm run build
+ARG VUE_APP_KAKAO_REDIRECT_URL
+
+RUN VUE_APP_KAKAO_REDIRECT_URL=https://topster2.site/kakaojoin npm run build
 
 # nginx
 FROM nginx
