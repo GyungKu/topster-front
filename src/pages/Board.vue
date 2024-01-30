@@ -1,7 +1,8 @@
 <template>
     <div class="page-title">
       <div class="container">
-        <h3>자유 게시판</h3>
+        <h3>탑스터 공유 게시판<br>
+          본인의 탑스터를 통해서만 게시글 작성이 가능합니다</h3>
       </div>
     </div>
 
@@ -45,7 +46,7 @@
     </div>
 
     <!-- 페이지네이션 컨트롤 -->
-    <Pagination :page="page" :totalPages="totalPages" @pageChange="handlePageChange" />
+  <Pagination :page="page" :totalPages="totalPages" :totalPageArray="generatePageArray" @pageChange="handlePageChange" />
 
 </template>
 
@@ -77,9 +78,7 @@ export default {
   },
 
   mounted() {
-    axios.get("/posts").then((res) => {
-      this.posts = res.data.content;
-    })
+    this.search();
   },
   methods: {
     search() {
@@ -87,9 +86,13 @@ export default {
 
       axios.get(`/posts${queryString}`)
       .then(response => {
-        this.posts = response.data.content;
+        const content = response.data.content;
+        if (content.length === 0) {
+          alert('검색 결과가 없습니다.');
+          this.page = 1; // 페이지를 1로 리셋
+        }
+        this.posts = content;
         this.totalPages = response.data.totalPages;
-        this.totalPageArray = this.generatePageArray;
       })
       .catch(error => {
         console.error('게시물을 불러오는 중 에러 발생:', error);
@@ -135,7 +138,6 @@ export default {
   },
 
   computed: {
-    // 계산된 속성을 통해 페이지 숫자 배열 생성
     generatePageArray() {
       return Array.from({ length: this.totalPages }, (_, index) => index + 1);
     },
@@ -146,6 +148,12 @@ export default {
     page() {
       this.totalPageArray = this.generatePageArray;
     },
+
+    max() {
+      this.page = 1;
+      this.search();
+    },
+
   },
 
 };

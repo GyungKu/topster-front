@@ -1,7 +1,7 @@
 <template>
   <div class="search-modal">
-    <h2>가수 검색 창</h2>
-    <input v-model="query" placeholder="가수 이름을 입력하세요" @keydown.enter="search"/>
+    <h2>앨범 검색</h2>
+    <input v-model="query" placeholder="가수, 노래명, 앨범명" @keydown.enter="search"/>
     <button @click="search">검색</button>
 
     <div class="search-results-container">
@@ -40,6 +40,15 @@ export default {
           router.push('/login');
         }
         this.albums = response.data;
+      })
+      .catch(err => {
+        const errorCode = err.response.data.code;
+        if (errorCode === 'O1000') {
+          alert('검색된 자료가 없습니다!');
+        }
+        if (err.response.status === 500) {
+          alert('서버에 문제가 생겼습니다.');
+        }
       })
     },
     selectItem(item) {

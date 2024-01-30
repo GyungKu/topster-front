@@ -13,7 +13,8 @@
     </div>
 
     <button class="btn btn-primary w-100 py-2" @click="submit">로그인</button>
-    <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2023</p>
+    <a href="#" @click="kakaoLogin"><img src="@/assets/kakao_login_medium.png"></a>
+
   </div>
 </template>
 
@@ -49,21 +50,36 @@ export default {
 
       axios.post("/users/login", userData, {withCredentials: true})
       .then((res) => {
-        const token = res.headers['authorization'];
-        axios.defaults.headers.common['Authorization'] = token;
-        this.$store.dispatch('setToken', token);
+        const access = res.headers['authorization'];
+        const refresh = res.headers['refreshtoken'];
+        axios.defaults.headers.common['authorization'] = access;
+        this.$store.dispatch('setToken', access);
         const accessToken = {
-          token: token,
+          token: access,
           expire: Date.now() + (58 * 60 * 1000),
         }
+        const refreshToken = {
+          token: refresh,
+          expire: Date.now() + (60 * 60 * 1000 * 24 * 7) - 6000
+        }
         localStorage.setItem("accessToken", JSON.stringify(accessToken));
+        localStorage.setItem("refreshToken", JSON.stringify(refreshToken));
         location.reload();
       }).then(() => router.push('/'))
       .catch(() => {
         alert("아이디 또는 비밀번호를 다시 확인해 주세요");
       });
+    },
+
+    kakaoLogin() {
+      const redirectUrl = process.env.VUE_APP_KAKAO_REDIRECT_URL;
+      const clientId = process.env.VUE_APP_KAKAO_CLIENT_ID;
+      const authUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=code`;
+      window.location.href = authUrl;
+      },
+
     }
-  },
+
 }
 </script>
 

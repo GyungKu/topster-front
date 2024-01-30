@@ -14,7 +14,7 @@
     <hr size="1px" color="#CCCCCC"/>
 
     <img
-        src="https://www.urbanbrush.net/web/wp-content/uploads/edd/2022/11/urbanbrush-20221108214712319041.jpg"
+        src="https://cdn.pixabay.com/photo/2023/09/13/07/29/ghost-8250317_1280.png"
         width="130px" height="130px" alt="프로필 사진">
 
     <ul class="gray">
