@@ -2,7 +2,7 @@
   <div class="pagination">
     <button @click="prevPage" :disabled="page === 1">이전</button>
     <span v-for="pageNumber in totalPageArray" :key="pageNumber">
-      <button @click="gotoPage(pageNumber)" :class="{ active: pageNumber === page }">{{ pageNumber }}</button>
+      <button :disabled="page === pageNumber" @click="gotoPage(pageNumber)" :class="{ active: pageNumber === page }">{{ pageNumber }}</button>
     </span>
     <button @click="nextPage" :disabled="page === totalPages">다음</button>
   </div>

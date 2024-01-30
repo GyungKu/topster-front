@@ -46,7 +46,7 @@
     </div>
 
     <!-- 페이지네이션 컨트롤 -->
-    <Pagination :page="page" :totalPages="totalPages" @pageChange="handlePageChange" />
+  <Pagination :page="page" :totalPages="totalPages" :totalPageArray="generatePageArray" @pageChange="handlePageChange" />
 
 </template>
 
@@ -78,13 +78,7 @@ export default {
   },
 
   mounted() {
-    axios.get("/posts").then((res) => {
-      const content = res.data.content;
-      if (content.length === 0) {
-        alert('결과가 없습니다.');
-      }
-      this.posts = content;
-    })
+    this.search();
   },
   methods: {
     search() {
@@ -94,11 +88,11 @@ export default {
       .then(response => {
         const content = response.data.content;
         if (content.length === 0) {
-          alert('결과가 없습니다.');
+          alert('검색 결과가 없습니다.');
+          this.page = 1; // 페이지를 1로 리셋
         }
         this.posts = content;
         this.totalPages = response.data.totalPages;
-        this.totalPageArray = this.generatePageArray;
       })
       .catch(error => {
         console.error('게시물을 불러오는 중 에러 발생:', error);
@@ -144,7 +138,6 @@ export default {
   },
 
   computed: {
-    // 계산된 속성을 통해 페이지 숫자 배열 생성
     generatePageArray() {
       return Array.from({ length: this.totalPages }, (_, index) => index + 1);
     },
@@ -155,6 +148,12 @@ export default {
     page() {
       this.totalPageArray = this.generatePageArray;
     },
+
+    max() {
+      this.page = 1;
+      this.search();
+    },
+
   },
 
 };
